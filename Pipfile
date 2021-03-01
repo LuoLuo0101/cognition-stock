@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.douban.com/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+sanic = "*"
+pyjwt = "*"
+aioredis = "*"
+sqlalchemy = "*"
+sanic-cors = "*"
+pymysql = "*"
+sanic-openapi = "*"
+gunicorn = "*"
+pyasn1 = {index = "https://pypi.douban.com/simple", version = "*"}
+
+[requires]
+python_version = "3.7"
