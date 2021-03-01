@@ -30,4 +30,4 @@ COPY . ${APP_ROOT}/
 
 EXPOSE 8000
 
-CMD ["gunicorn", "manage:app"]
+CMD ["sh", "run.sh"]

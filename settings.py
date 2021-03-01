@@ -12,9 +12,9 @@ MIDDLEWARE_REGEX_WHITE_LIST = [
 WHITE_LIST = ["swagger"] # 不需要JWT登录认证的路径
 SIGNATURE_WHITE_LIST = []   # 不需要签名的白名单路径
 
-# CREATE DATABASE cognition DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+# CREATE DATABASE stock DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 DB_SETTINGS = {
-    "dsn": "mysql+pymysql://root:TingMin1008!@127.0.0.1:3306/cognition?charset=utf8mb4",
+    "dsn": os.environ.get("MYSQL_DSN", "mysql+pymysql://root:TingMin1008!@127.0.0.1:3306/stock?charset=utf8mb4"),
     "pool_size": 100,
     "pool_recycle": 1200,
     "max_overflow": 10,
@@ -58,4 +58,66 @@ API_SECURITY_DEFINITIONS = {
     # "BasicAuth": {"type": "basic"},
     # "ApiKeyAuth": {"type": "apiKey", "in": "header", "name": "X-API-KEY"},
     "TokenAuth": {"type": "apiKey", "in": "header", "name": "Authorization"},
+}
+
+log_config = {
+    'version':1,
+    'disable_existing_loggers': False,
+    'loggers':{
+        '': {
+            'level': 'INFO',
+            'handlers': ['console']
+        },
+        'sanic.root': {
+            'level': 'DEBUG',# 打日志的等级可以换的，下面的同理
+            'handlers': ['error_file'], # 对应下面的键
+            'propagate': 1,
+            'qualname': 'sanic.root'
+        },
+        'sanic.access': {
+            'level': 'DEBUG',
+            'handlers': ['access_file'],
+            'propagate': 0,
+            'qualname': 'sanic.access'
+        }
+    },
+    'handlers':{
+        'access_file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024 * 1024 * 20,  # 打日志的大小，我这种写法是20M
+            'backupCount': 1,  # 备份多少份，经过测试，最少也要写1，不然控制不住大小
+            'formatter': 'generic',  # 对应下面的键
+            'filename': 'sanic.access.log'  # 打日志的路径
+        },
+        'error_file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024 * 1024 * 20,   # 打日志的大小，我这种写法是20M
+            'backupCount': 1,   # 备份多少份，经过测试，最少也要写1，不然控制不住大小
+            'formatter': 'generic',     # 对应下面的键
+            'filename': 'sanic.error.log'# 打日志的路径
+        },
+        'root_file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024 * 1024 * 20,
+            'backupCount': 1,
+            'formatter': 'generic',
+            'filename': 'sanic.root.log',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
+            'formatter': 'generic',
+        },
+    },
+    'formatters':{
+        'generic': {
+            'format': '%(asctime)s - (%(name)s)[%(levelname)s][%(host)s]: %(request)s %(message)s %(status)d %(byte)d', # 打日志的格式
+            'datefmt': '[%Y-%m-%d %H:%M:%S %z]',    # 时间显示方法
+            'class': 'logging.Formatter'
+        },
+        'access': {
+            'format': '%(asctime)s - (%(name)s)[%(levelname)s][%(host)s]: %(request)s %(message)s %(status)d %(byte)d',
+            'class': 'logging.Formatter'
+        }
+    }
 }

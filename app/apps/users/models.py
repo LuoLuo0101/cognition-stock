@@ -79,7 +79,7 @@ class Platform(Base):
     TYPE_WEB = 0    # 前台对外
     TYPE_ADMIN = 1  # 后台管理
     type = Column(SmallInteger, default=TYPE_WEB, comment="平台类型")
-    key = Column(String(64), unique=True, comment="平台Key")  # 唯一
+    key = Column(String(64), unique=True, comment="平台Key")  # 平台唯一识别码
     description = Column(String(256), comment="描述")
 
     create_time = Column(DateTime, default=datetime.now)
@@ -112,7 +112,7 @@ class Permission(Base):
 
     id = Column(BigInteger, primary_key=True)
     name = Column(String(32), comment="权限名称")
-    key = Column(String(64), unique=True, comment="权限Key")  # 唯一，对应端口
+    key = Column(String(64), unique=True, comment="权限Key")  # 唯一，[platform_key]:POST:/users/user/1
 
     create_time = Column(DateTime, default=datetime.now)
     update_time = Column(DateTime, default=datetime.now, onupdate=datetime.now)
