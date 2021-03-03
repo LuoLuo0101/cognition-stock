@@ -10,7 +10,7 @@ from app.middlewares import configure_middlewares
 
 def create_app() -> Sanic:
     error_handler = CustomHandler()
-    app: Sanic = Sanic(name="opserver", error_handler=error_handler)
+    app: Sanic = Sanic(name="stock", error_handler=error_handler)
     app.config.from_object(settings)  # 导入 Sanic 配置
     configure_blueprints(app)  # 配置蓝图
     configure_listeners(app)  # 配置监听：redis

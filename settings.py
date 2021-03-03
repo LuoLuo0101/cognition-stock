@@ -27,7 +27,7 @@ REDIS_DSN = os.environ.get("REDIS_DSN", "redis://127.0.0.1:6379/8")
 HTTP_TIMEOUT = 5
 
 # jwt token
-JWT_SECRET_KEY = "opserver_secret"     # 加密Key
+JWT_SECRET_KEY = "stock_secret"     # 加密Key
 JWT_TTL = 60 * 60 * 24 * 7          # JWT 7天有效
 
 # swagger
